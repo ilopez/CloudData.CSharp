@@ -15,6 +15,22 @@ namespace CloudDataClient
             this.web = new RestClient(URLBase);
             this.web.Authenticator = new HttpBasicAuthenticator(APIKey, APIKey);
         }
+
+        public bool Execute(String Query)
+        {
+            var rq = new RestRequest("update", Method.POST);
+            rq.AddParameter("text/xml", Query, ParameterType.RequestBody);
+            var rs = web.Execute(rq);
+            if (rs.Content == "true")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public QueryResponse Query(String Query)
         {
             var rq = GenerateRequest(Query);

@@ -17,8 +17,12 @@ namespace TestConsole
             Console.WriteLine(rs.RawContent);
 
             var obj = cd.Query<List<TestObject>>("select * from oc_country limit 10");
+            Console.WriteLine("Records: " + obj.Count); 
 
-            Console.WriteLine("TEST");
+            bool test = cd.Execute("update oc_country set address_format = 'TEST' where country_id = 1");
+            Console.WriteLine(test);
+
+            Console.ReadLine();
         }
     }
 
