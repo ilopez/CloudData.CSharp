@@ -10,12 +10,22 @@ namespace CloudDataClient
     public class CloudData
     {
         private RestClient web;
+        /// <summary>
+        /// Creates a CloudData Client
+        /// </summary>
+        /// <param name="URLBase">The URL Base of the WebSite in Question.</param>
+        /// <param name="APIKey">The API Key of the Script.</param>
         public CloudData(String URLBase, String APIKey)
         {
             this.web = new RestClient(URLBase);
             this.web.Authenticator = new HttpBasicAuthenticator(APIKey, APIKey);
         }
 
+        /// <summary>
+        /// Runs a Execute/Update/Insert request without returning results.
+        /// </summary>
+        /// <param name="Query">UPDATE|INSERT|DELETE Query</param>
+        /// <returns>True/False if the Request Works.</returns>
         public bool Execute(String Query)
         {
             var rq = new RestRequest("update", Method.POST);
@@ -31,6 +41,11 @@ namespace CloudDataClient
             }
         }
 
+        /// <summary>
+        /// Returns a basic QueryResponse object.
+        /// </summary>
+        /// <param name="Query">SELECT Query</param>
+        /// <returns></returns>
         public QueryResponse Query(String Query)
         {
             var rq = GenerateRequest(Query);
@@ -50,6 +65,12 @@ namespace CloudDataClient
             return rq;
         }
 
+        /// <summary>
+        /// Query runs a SELECT statement but returns a list or object of type T.
+        /// </summary>
+        /// <typeparam name="T">The Return Object Type Parameter</typeparam>
+        /// <param name="Query">SELECT Query</param>
+        /// <returns></returns>
         public T Query<T>(String Query) where T : new ()
         {
             var rq = GenerateRequest(Query);
