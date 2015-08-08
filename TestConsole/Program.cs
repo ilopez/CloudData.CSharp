@@ -1,6 +1,7 @@
 ﻿using CloudDataClient;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,15 +13,18 @@ namespace TestConsole
         static void Main(string[] args)
         {
             CloudData cd = new CloudData("http://opencart.israellopezconsulting.com/fishbowl/", "DLVJvVSnjuOHresulfD4");
+            cd.SetTimeout(1000);
 
-            var rs = cd.Query("select * from oc_country limit 10");
-            Console.WriteLine(rs.RawContent);
+            var rs = cd.Query("select * from oc_country");            
+            Console.WriteLine(rs.StopWatch.Elapsed.ToString());
 
             var obj = cd.Query<List<TestObject>>("select * from oc_country limit 10");
-            Console.WriteLine("Records: " + obj.Count); 
+            if(obj.Data != null)
+                Console.WriteLine("Records: " + obj.Data.Count); 
 
-            bool test = cd.Execute("update oc_country set address_format = 'TEST' where country_id = 1");
-            Console.WriteLine(test);
+            var test = cd.Execute("update oc_country set address_format = 'TEST' where country_id = 1");
+            Console.WriteLine(test.Executed);
+            Console.WriteLine(test.StopWatch.Elapsed.ToString());
 
             Console.ReadLine();
         }

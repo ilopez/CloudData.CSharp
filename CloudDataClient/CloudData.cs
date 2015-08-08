@@ -1,6 +1,7 @@
 ﻿using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,23 +23,28 @@ namespace CloudDataClient
         }
 
         /// <summary>
+        /// Sets the Timeout for subsequent requests.
+        /// </summary>
+        /// <param name="Miliseconds"></param>
+        public void SetTimeout(int Milliseconds)
+        {
+            this.web.Timeout = Milliseconds;
+        }
+
+        /// <summary>
         /// Runs a Execute/Update/Insert request without returning results.
         /// </summary>
         /// <param name="Query">UPDATE|INSERT|DELETE Query</param>
         /// <returns>True/False if the Request Works.</returns>
-        public bool Execute(String Query)
+        public ExecuteResponse Execute(String Query)
         {
-            var rq = new RestRequest("update", Method.POST);
-            rq.AddParameter("text/xml", Query, ParameterType.RequestBody);
+            var ers = new ExecuteResponse();
+            var rq = GenerateRequest(Query);
             var rs = web.Execute(rq);
-            if (rs.Content == "true")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            PopulateQueryResponse(rs, ers);
+            ers.Executed = (rs.Content == "true");
+            ers.StopWatch.Stop();
+            return ers;            
         }
 
         /// <summary>
@@ -48,14 +54,20 @@ namespace CloudDataClient
         /// <returns></returns>
         public QueryResponse Query(String Query)
         {
-            var rq = GenerateRequest(Query);
-
-            var rs = this.web.Execute(rq);
-            int i = 0;
             QueryResponse qrs = new QueryResponse();
-            qrs.HTTPCode = (int)rs.StatusCode;
-            qrs.RawContent = rs.Content;
+            var rq = GenerateRequest(Query);
+            var rs = this.web.Execute(rq);            
+            PopulateQueryResponse(rs, qrs);
+            qrs.StopWatch.Stop();
             return qrs;
+        }
+
+        private static void PopulateQueryResponse(IRestResponse rs, ResponseBase bs)
+        {
+            bs.HTTPCode = (int)rs.StatusCode;
+            bs.RawContent = rs.Content;
+            bs.ErrorException = rs.ErrorException;
+            bs.ErrorMessage = rs.ErrorMessage;
         }
 
         private static RestRequest GenerateRequest(String Query)
@@ -71,20 +83,62 @@ namespace CloudDataClient
         /// <typeparam name="T">The Return Object Type Parameter</typeparam>
         /// <param name="Query">SELECT Query</param>
         /// <returns></returns>
-        public T Query<T>(String Query) where T : new ()
+        public QueryResponse<T> Query<T>(String Query) where T : new ()
         {
-            var rq = GenerateRequest(Query);
+            var qrs = new QueryResponse<T>();
+            var rq = GenerateRequest(Query);            
             var rs = this.web.Execute<T>(rq);
-            if (rs.ErrorException != null)
+            PopulateQueryResponse(rs, qrs);
+            if (rs.ErrorException == null)
             {
-                throw new Exception("Query Exception: " + rs.ErrorException);
+                qrs.Data = rs.Data;
             }
-            return rs.Data;
+            qrs.StopWatch.Stop();
+            return qrs;
+        }
+
+    }
+
+    /// <summary>
+    /// Public Response Base
+    /// </summary>
+    public class ResponseBase
+    {
+
+        public int HTTPCode { get; set; }
+        public String RawContent { get; set; }
+        public String ErrorMessage { get; set; }
+        public Exception ErrorException { get; set; }
+        public Stopwatch StopWatch { get; set; }
+        public ResponseBase()
+        {
+            this.StopWatch = new Stopwatch();
+            this.StopWatch.Start();
         }
     }
-    public class QueryResponse
+
+    /// <summary>
+    /// Response when we just want the JSON or the Data Content
+    /// </summary>
+    public class QueryResponse : ResponseBase
+    {        
+        
+    }
+
+    /// <summary>
+    /// Reponse when we want the JSON deserialized.
+    /// </summary>
+    /// <typeparam name="T">Target Object.</typeparam>
+    public class QueryResponse<T> : ResponseBase
     {
-        public int HTTPCode { get; set; }
-        public String RawContent { get; set; }       
+        public T Data { get; set; }
+    }
+
+    /// <summary>
+    /// Response for non Data updates
+    /// </summary>
+    public class ExecuteResponse : ResponseBase
+    {
+        public bool Executed {get;set;}
     }
 }
