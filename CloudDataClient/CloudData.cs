@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace CloudDataClient
 {
+    /// <summary>
+    /// CloudData client allows you to query/execute statements against a CloudData Endpoint.
+    /// This endpoint could be connected to a MySQL database, Postgres, or other database systems.
+    /// </summary>
     public class CloudData
     {
         private RestClient web;
@@ -62,21 +66,6 @@ namespace CloudDataClient
             return qrs;
         }
 
-        private static void PopulateQueryResponse(IRestResponse rs, ResponseBase bs)
-        {
-            bs.HTTPCode = (int)rs.StatusCode;
-            bs.RawContent = rs.Content;
-            bs.ErrorException = rs.ErrorException;
-            bs.ErrorMessage = rs.ErrorMessage;
-        }
-
-        private static RestRequest GenerateRequest(String Query)
-        {
-            var rq = new RestRequest("simplequery", Method.POST);
-            rq.AddParameter("text/xml", Query, ParameterType.RequestBody);
-            return rq;
-        }
-
         /// <summary>
         /// Query runs a SELECT statement but returns a list or object of type T.
         /// </summary>
@@ -97,6 +86,21 @@ namespace CloudDataClient
             return qrs;
         }
 
+
+        private static void PopulateQueryResponse(IRestResponse rs, ResponseBase bs)
+        {
+            bs.HTTPCode = (int)rs.StatusCode;
+            bs.RawContent = rs.Content;
+            bs.ErrorException = rs.ErrorException;
+            bs.ErrorMessage = rs.ErrorMessage;
+        }
+
+        private static RestRequest GenerateRequest(String Query)
+        {
+            var rq = new RestRequest("simplequery", Method.POST);
+            rq.AddParameter("text/xml", Query, ParameterType.RequestBody);
+            return rq;
+        }
     }
 
     /// <summary>
