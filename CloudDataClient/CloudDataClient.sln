@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDataClient", "CloudDataClient.csproj", "{161A1F5D-2F19-4382-ACF8-58F614B0813D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "..\TestConsole\TestConsole.csproj", "{A15D315E-4E65-4521-BD8B-04537B62C5F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDesktop", "..\TestDesktop\TestDesktop.csproj", "{A2086896-CFEE-43B6-A04A-3575A62EF00B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A15D315E-4E65-4521-BD8B-04537B62C5F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A15D315E-4E65-4521-BD8B-04537B62C5F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A15D315E-4E65-4521-BD8B-04537B62C5F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2086896-CFEE-43B6-A04A-3575A62EF00B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2086896-CFEE-43B6-A04A-3575A62EF00B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2086896-CFEE-43B6-A04A-3575A62EF00B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2086896-CFEE-43B6-A04A-3575A62EF00B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

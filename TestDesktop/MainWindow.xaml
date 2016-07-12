@@ -1,0 +1,50 @@
+﻿<Window x:Class="TestDesktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestDesktop"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
+            <Button Command="{Binding Run}">Run</Button>
+        </StackPanel>
+        <Expander Header="Settings" Grid.Row="1">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>URL</Label>
+                    <TextBox Width="200" Text="{Binding URL}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Key</Label>
+                    <TextBox Width="200" Text="{Binding Key}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Timeout</Label>
+                    <TextBox Width="200" Text="{Binding Timeout}"></TextBox>
+                </StackPanel>
+            </StackPanel>
+        </Expander>
+        <Expander Header="Query" Grid.Row="2">
+            <StackPanel>
+                <Label>Query</Label>
+                <TextBox AcceptsReturn="True" TextWrapping="WrapWithOverflow" Text="{Binding Query}"></TextBox>
+            </StackPanel>
+        </Expander>
+        <TabControl Grid.Row="3">
+            <TabItem Header="Text" Grid.Row="3">
+                <TextBox AcceptsReturn="True" TextWrapping="WrapWithOverflow" Text="{Binding Result}"></TextBox>
+            </TabItem>
+            <TabItem Header="DataTable">
+                <DataGrid ItemsSource="{Binding ResultDataTable}"></DataGrid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

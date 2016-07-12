@@ -12,8 +12,8 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            CloudData cd = new CloudData("http://opencart.israellopezconsulting.com/fishbowl/", "DLVJvVSnjuOHresulfD4");
-            cd.SetTimeout(1000);
+            CloudData cd = new CloudData("http://fhdist.com/fishbowl/", "2497!NjSDKJ");
+            cd.SetTimeout(10000);
 
             var rs = cd.Query("select * from oc_country");            
             Console.WriteLine(rs.StopWatch.Elapsed.ToString());
