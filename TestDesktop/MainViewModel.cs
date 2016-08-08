@@ -24,6 +24,8 @@ namespace TestDesktop
 
         public DataTable ResultDataTable { get; set; }
 
+        public String ResultCode { get; set; }
+
         public ICommand Run => new RelayCommand(cmdRun);
 
         private void cmdRun()
@@ -39,6 +41,17 @@ namespace TestDesktop
                 //Object jObject = JsonConvert.DeserializeObject<JObject>(Result);
                 ResultDataTable = JsonConvert.DeserializeObject<DataTable>(Result);
                 // = data.Tables[0];
+
+                StringBuilder sb = new StringBuilder();
+
+                foreach (var i in ResultDataTable.Columns.Cast<DataColumn>())
+                {
+                    sb.AppendLine($"public {i.DataType.ToString()} {i.ColumnName} " + "{get ; set ; }");
+
+                }
+
+                ResultCode = sb.ToString();
+
             }
             catch (Exception ex)
             {            
@@ -46,6 +59,7 @@ namespace TestDesktop
             }
 
             OnPropertyChanged("Result");
+            OnPropertyChanged("ResultCode");
             OnPropertyChanged("ResultDataTable");
         }
     }

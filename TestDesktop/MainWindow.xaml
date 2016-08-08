@@ -11,7 +11,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
             <Button Command="{Binding Run}">Run</Button>
@@ -44,6 +44,11 @@
             </TabItem>
             <TabItem Header="DataTable">
                 <DataGrid ItemsSource="{Binding ResultDataTable}"></DataGrid>
+            </TabItem>
+            <TabItem Header="Code">
+                <TextBox AcceptsReturn="True" TextWrapping="WrapWithOverflow" Text="{Binding ResultCode}">
+                    
+                </TextBox>
             </TabItem>
         </TabControl>
     </Grid>
